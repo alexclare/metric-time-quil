@@ -24,7 +24,10 @@
     (scaled q/line (if (= 0 (mod i 10)) (/ 9 30) (/ 3))
             0 (/ 11 30) 0)
     (rotate-fraction (/ 100)))
-  (q/pop-matrix))
+  (q/pop-matrix)
+
+  (q/fill foreground-color)
+  (scaled q/ellipse 0 0 (/ 80) (/ 80)))
 
 
 (defn clock-hands [frac]
