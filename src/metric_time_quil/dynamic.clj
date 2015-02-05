@@ -34,6 +34,13 @@
 
 (defn clock-hands [frac]
   (q/stroke foreground-color)
+
+  (q/stroke-weight 1)
+  (q/push-matrix)
+  (rotate-fraction (- (* 10000 frac) (Math/floor (* 10000 frac))))
+  (scaled q/line 0 0 (/ 11 30) 0)
+  (q/pop-matrix)
+
   (q/stroke-weight 2)
   (q/push-matrix)
   (rotate-fraction (- (* 100 frac) (Math/floor (* 100 frac))))
@@ -49,7 +56,7 @@
 
 (defn fraction-from-instant [instant]
   (/ (. instant get
-        (. (ISOChronology/getInstance) secondOfDay)) 86400))
+        (. (ISOChronology/getInstance) millisOfDay)) 86400000))
 
 (defn setup []
   (q/frame-rate 30)
