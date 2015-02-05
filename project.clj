@@ -4,4 +4,5 @@
   :license {:name "GNU General Public License"
             :url "http://www.gnu.org/licenses/gpl.html"}
   :dependencies [[org.clojure/clojure "1.6.0"]
-                 [quil "2.2.4"]])
+                 [quil "2.2.4"]
+                 [joda-time/joda-time "2.7"]])

@@ -1,5 +1,7 @@
 (ns metric-time-quil.dynamic
-  (:require [quil.core :as q]))
+  (:require [quil.core :as q])
+  (:import [org.joda.time Instant]
+           [org.joda.time.chrono ISOChronology]))
 
 (def background-color 255)
 (def foreground-color 0)
@@ -45,17 +47,16 @@
   (q/pop-matrix))
 
 
+(defn fraction-from-instant [instant]
+  (/ (. instant get
+        (. (ISOChronology/getInstance) secondOfDay)) 86400))
+
 (defn setup []
   (q/frame-rate 30)
   {:fraction 0.0})
 
 (defn update [state]
-  {:fraction (-> (q/hour)
-                 (* 60)
-                 (+ (q/minute))
-                 (* 60)
-                 (+ (q/seconds))
-                 (/ 86400))})
+  {:fraction (fraction-from-instant (Instant/now))})
 
 (defn draw [state]
   ;; this would be a good place to use prior state to clean up intelligently
