@@ -29,7 +29,7 @@
   (q/pop-matrix)
 
   (q/fill foreground-color)
-  (scaled q/ellipse 0 0 (/ 80) (/ 80)))
+  #_(scaled q/ellipse 0 0 (/ 80) (/ 80)))
 
 
 (defn clock-hands [frac]
@@ -40,6 +40,15 @@
   (rotate-fraction (- (* 10000 frac) (Math/floor (* 10000 frac))))
   (scaled q/line 0 0 (/ 11 30) 0)
   (q/pop-matrix)
+
+  (comment
+    (q/stroke-weight 1)
+    (q/no-fill)
+    (let [scaled-frac (- (* 1000 frac) (Math/floor (* 1000 frac)))
+          actual (if (even? (int (Math/floor (* 1000 frac)))) scaled-frac (- 1 scaled-frac))]
+      (scaled q/ellipse 0 0
+              (+ (/ 3) (* actual (/ 3)))
+              (+ (/ 3) (* actual (/ 3))))))
 
   (q/stroke-weight 2)
   (q/push-matrix)
