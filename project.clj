@@ -5,4 +5,7 @@
             :url "http://www.gnu.org/licenses/gpl.html"}
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [quil "2.2.4"]
-                 [joda-time/joda-time "2.7"]])
+                 [joda-time/joda-time "2.7"]]
+  :plugins [[lein-marginalia "0.8.0"]]
+  :main metric-time-quil.core
+  :aot [metric-time-quil.core])

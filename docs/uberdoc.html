@@ -2870,14 +2870,23 @@ net.brehaut.ClojureTools = (function (SH) {
 </td><td class="codes"><pre class="brush: clojure">(ns metric-time-quil.core
   (:require [quil.core :as q]
             [quil.middleware :as m]
-            [metric-time-quil.dynamic :as dyn]))</pre></td></tr><tr><td class="docs">
-</td><td class="codes"><pre class="brush: clojure">(q/defsketch metric-time-quil
+            [metric-time-quil.dynamic :as dyn])
+  (:gen-class))</pre></td></tr><tr><td class="docs"><p>something about rapid repl development</p>
+</td><td class="codes"><pre class="brush: clojure">#_(q/defsketch metric-time-quil
   :title &quot;metric time&quot;
   :size [500 500]
   :setup dyn/setup
   :update dyn/update
   :draw dyn/draw
-  :middleware [m/fun-mode])</pre></td></tr><tr><td class="spacer docs">&nbsp;</td><td class="codes" /></tr><tr><td class="docs"><div class="docs-header"><a class="anchor" href="#metric-time-quil.dynamic" name="metric-time-quil.dynamic"><h1 class="project-name">metric-time-quil.dynamic</h1><a class="toc-link" href="#toc">toc</a></a></div></td><td class="codes" /></tr><tr><td class="docs">
+  :middleware [m/fun-mode])
+(defn -main [&amp; args]
+  (q/sketch
+     :title &quot;metric time&quot;
+     :size [500 500]
+     :setup dyn/setup
+     :update dyn/update
+     :draw dyn/draw
+     :middleware [m/fun-mode]))</pre></td></tr><tr><td class="spacer docs">&nbsp;</td><td class="codes" /></tr><tr><td class="docs"><div class="docs-header"><a class="anchor" href="#metric-time-quil.dynamic" name="metric-time-quil.dynamic"><h1 class="project-name">metric-time-quil.dynamic</h1><a class="toc-link" href="#toc">toc</a></a></div></td><td class="codes" /></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(ns metric-time-quil.dynamic
   (:require [quil.core :as q])
   (:import [org.joda.time Instant]
