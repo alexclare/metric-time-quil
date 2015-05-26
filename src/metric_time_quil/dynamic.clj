@@ -3,8 +3,14 @@
   (:import [org.joda.time Instant]
            [org.joda.time.chrono ISOChronology]))
 
+
+;; ## default colors
+
 (def background-color 255)
 (def foreground-color 0)
+
+
+;; ## scaling/rotation convenience functions
 
 (defn rotate-fraction [phi] (q/rotate (* phi q/TWO-PI)))
 (defn scale-x [x] (* x (q/width)))
@@ -12,7 +18,11 @@
 (defn scaled [fun xa ya xb yb]
   (fun (scale-x xa) (scale-y ya) (scale-x xb) (scale-y yb)))
 
-(defn clock-base []
+
+;; ## drawing logic
+
+(defn clock-base
+  "Clock static elements that don't change frame by frame." []
   (q/no-fill)
   (q/stroke foreground-color)
 
@@ -63,9 +73,14 @@
   (q/pop-matrix))
 
 
-(defn fraction-from-instant [instant]
+(defn fraction-from-instant
+  "Turn a joda.time Instant into the amount of the day that has elapsed."
+  [instant]
   (/ (. instant get
         (. (ISOChronology/getInstance) millisOfDay)) 86400000))
+
+
+;; ## quil foundation functions
 
 (defn setup []
   (q/frame-rate 30)
