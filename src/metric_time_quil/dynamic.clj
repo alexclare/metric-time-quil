@@ -19,6 +19,15 @@
   (fun (scale-x xa) (scale-y ya) (scale-x xb) (scale-y yb)))
 
 
+;; ## convenience macros
+
+(defmacro operation [& body]
+  `(do
+     (q/push-matrix)
+     ~@body
+     (q/pop-matrix)))
+
+
 ;; ## drawing logic
 
 (defn clock-base
@@ -31,12 +40,11 @@
   (scaled q/ellipse 0 0 (/ 2 3) (/ 2 3))
 
   (q/stroke-weight 1)
-  (q/push-matrix)
-  (dotimes [i 100]
-    (scaled q/line (if (= 0 (mod i 10)) (/ 9 30) (/ 3))
-            0 (/ 11 30) 0)
-    (rotate-fraction (/ 100)))
-  (q/pop-matrix)
+  (operation
+   (dotimes [i 100]
+     (scaled q/line (if (= 0 (mod i 10)) (/ 9 30) (/ 3))
+             0 (/ 11 30) 0)
+     (rotate-fraction (/ 100))))
 
   (q/fill foreground-color)
   #_(scaled q/ellipse 0 0 (/ 80) (/ 80)))
@@ -46,10 +54,9 @@
   (q/stroke foreground-color)
 
   (q/stroke-weight 1)
-  (q/push-matrix)
-  (rotate-fraction (- (* 10000 frac) (Math/floor (* 10000 frac))))
-  (scaled q/line 0 0 (/ 11 30) 0)
-  (q/pop-matrix)
+  (operation
+   (rotate-fraction (- (* 10000 frac) (Math/floor (* 10000 frac))))
+   (scaled q/line 0 0 (/ 11 30) 0))
 
   (comment
     (q/stroke-weight 1)
@@ -61,16 +68,14 @@
               (+ (/ 3) (* actual (/ 3))))))
 
   (q/stroke-weight 2)
-  (q/push-matrix)
-  (rotate-fraction (- (* 100 frac) (Math/floor (* 100 frac))))
-  (scaled q/line 0 0 (/ 11 30) 0)
-  (q/pop-matrix)
+  (operation
+   (rotate-fraction (- (* 100 frac) (Math/floor (* 100 frac))))
+   (scaled q/line 0 0 (/ 11 30) 0))
 
-  (q/push-matrix)
-  (q/stroke-weight 3)
-  (rotate-fraction frac)
-  (scaled q/line 0 0 (/ 11 30) 0)
-  (q/pop-matrix))
+  (operation
+   (q/stroke-weight 3)
+   (rotate-fraction frac)
+   (scaled q/line 0 0 (/ 11 30) 0)))
 
 
 (defn fraction-from-instant

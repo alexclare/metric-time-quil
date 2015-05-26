@@ -2899,7 +2899,13 @@ net.brehaut.ClojureTools = (function (SH) {
 (defn scale-x [x] (* x (q/width)))
 (defn scale-y [y] (* y (q/height)))
 (defn scaled [fun xa ya xb yb]
-  (fun (scale-x xa) (scale-y ya) (scale-x xb) (scale-y yb)))</pre></td></tr><tr><td class="docs"><h2>drawing logic</h2>
+  (fun (scale-x xa) (scale-y ya) (scale-x xb) (scale-y yb)))</pre></td></tr><tr><td class="docs"><h2>convenience macros</h2>
+</td><td class="codes"></td></tr><tr><td class="docs">
+</td><td class="codes"><pre class="brush: clojure">(defmacro operation [&amp; body]
+  `(do
+     (q/push-matrix)
+     ~@body
+     (q/pop-matrix)))</pre></td></tr><tr><td class="docs"><h2>drawing logic</h2>
 </td><td class="codes"></td></tr><tr><td class="docs"><p>Clock static elements that don't change frame by frame.</p>
 </td><td class="codes"><pre class="brush: clojure">(defn clock-base
    []
@@ -2909,21 +2915,19 @@ net.brehaut.ClojureTools = (function (SH) {
   (scaled q/ellipse 0 0 (/ 1 3) (/ 1 3))
   (scaled q/ellipse 0 0 (/ 2 3) (/ 2 3))
   (q/stroke-weight 1)
-  (q/push-matrix)
-  (dotimes [i 100]
-    (scaled q/line (if (= 0 (mod i 10)) (/ 9 30) (/ 3))
-            0 (/ 11 30) 0)
-    (rotate-fraction (/ 100)))
-  (q/pop-matrix)
+  (operation
+   (dotimes [i 100]
+     (scaled q/line (if (= 0 (mod i 10)) (/ 9 30) (/ 3))
+             0 (/ 11 30) 0)
+     (rotate-fraction (/ 100))))
   (q/fill foreground-color)
   #_(scaled q/ellipse 0 0 (/ 80) (/ 80)))</pre></td></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(defn clock-hands [frac]
   (q/stroke foreground-color)
   (q/stroke-weight 1)
-  (q/push-matrix)
-  (rotate-fraction (- (* 10000 frac) (Math/floor (* 10000 frac))))
-  (scaled q/line 0 0 (/ 11 30) 0)
-  (q/pop-matrix)
+  (operation
+   (rotate-fraction (- (* 10000 frac) (Math/floor (* 10000 frac))))
+   (scaled q/line 0 0 (/ 11 30) 0))
   (comment
     (q/stroke-weight 1)
     (q/no-fill)
@@ -2933,15 +2937,13 @@ net.brehaut.ClojureTools = (function (SH) {
               (+ (/ 3) (* actual (/ 3)))
               (+ (/ 3) (* actual (/ 3))))))
   (q/stroke-weight 2)
-  (q/push-matrix)
-  (rotate-fraction (- (* 100 frac) (Math/floor (* 100 frac))))
-  (scaled q/line 0 0 (/ 11 30) 0)
-  (q/pop-matrix)
-  (q/push-matrix)
-  (q/stroke-weight 3)
-  (rotate-fraction frac)
-  (scaled q/line 0 0 (/ 11 30) 0)
-  (q/pop-matrix))</pre></td></tr><tr><td class="docs"><p>Turn a joda.time Instant into the amount of the day that has elapsed.</p>
+  (operation
+   (rotate-fraction (- (* 100 frac) (Math/floor (* 100 frac))))
+   (scaled q/line 0 0 (/ 11 30) 0))
+  (operation
+   (q/stroke-weight 3)
+   (rotate-fraction frac)
+   (scaled q/line 0 0 (/ 11 30) 0)))</pre></td></tr><tr><td class="docs"><p>Turn a joda.time Instant into the amount of the day that has elapsed.</p>
 </td><td class="codes"><pre class="brush: clojure">(defn fraction-from-instant
   [instant]
   (/ (. instant get
